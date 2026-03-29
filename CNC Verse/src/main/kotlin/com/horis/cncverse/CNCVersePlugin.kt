@@ -7,16 +7,20 @@ import android.content.Context
 @CloudstreamPlugin
 open class CNCVersePlugin: Plugin() {
     override fun load(context: Context) {
-        // All providers should be added in this manner. Please don't edit the providers list directly.
+        // यहाँ हमने सभी पुराने और नए Bollyflix को एक साथ जोड़ दिया है
         NetflixMirrorStorage.init(context.applicationContext)
         DisneyPlusProvider.context = context
         NetflixMirrorProvider.context = context
         PrimeVideoMirrorProvider.context = context
         HotStarMirrorProvider.context = context
+        
+        // 1. आपका नया Bollyflix
+        registerMainAPI(BollyflixProvider())
+        
+        // 2. आपके पुराने प्रोवाइडर्स
         registerMainAPI(NetflixMirrorProvider())
         registerMainAPI(PrimeVideoMirrorProvider())
         registerMainAPI(HotStarMirrorProvider())
         registerMainAPI(DisneyPlusProvider())
     }
-
 }
