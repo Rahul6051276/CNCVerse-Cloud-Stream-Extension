@@ -2,7 +2,7 @@ package com.horis.cncverse
 
 import com.lagradost.cloudstream3.*
 
-open class BollyflixProvider : MainAPI() {
+open class BollyflixProvider : MainAPI() { 
     override var mainUrl = "https://bollyflix.frl"
     override var name = "Bollyflix Custom"
     override val hasMainPage = true
