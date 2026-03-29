@@ -3,6 +3,7 @@ package com.horis.cncverse
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.ExtractorLink
 import com.lagradost.cloudstream3.utils.loadExtractor
+import com.lagradost.cloudstream3.utils.Qualities
 
 open class BollyflixProvider : MainAPI() {
     override var mainUrl = "https://bollyflix.frl"
@@ -12,9 +13,16 @@ open class BollyflixProvider : MainAPI() {
     override val hasQuickSearch = true
 
     override val mainPage = mainPageOf(
-        "category/bollywood-movies/" to "🎬 Bollywood",
-        "category/dual-audio-hindi-dubbed-movies/" to "🌐 Dual Audio",
-        "category/web-series/" to "📺 Web Series"
+        "movies/bollywood/" to "Bollywood",
+        "movies/south-hindi-dubbed/" to "South Hindi Dubbed",
+        "movies/dual-audio-movies/" to "Dual Audio",
+        "movies/hindi-dubbed-movies-480p-720p/" to "Hindi Dubbed",
+        "movies/hollywood/" to "Hollywood",
+        "web-series/netflix/" to "Netflix",
+        "web-series/amazon-prime-video/" to "Amazon Prime",
+        "web-series/hotstar/" to "Hotstar",
+        "web-series/disney/" to "Disney Plus",
+        "web-series/korean-drama/" to "Korean Drama"
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
@@ -39,7 +47,6 @@ open class BollyflixProvider : MainAPI() {
         }
     }
 
-    // यही वो हिस्सा है जो वीडियो लिंक उठाएगा (Direct Play Logic)
     override suspend fun loadLinks(
         data: String,
         isCasting: Boolean,
@@ -47,11 +54,24 @@ open class BollyflixProvider : MainAPI() {
         callback: (ExtractorLink) -> Unit
     ): Boolean {
         val document = app.get(data).document
-        // यह आपकी दी हुई फाइल के 'Download Button' के स्ट्रक्चर को स्कैन करेगा
-        document.select("a[href*='download'], a.btn-download, a[href*='drive']").forEach { 
+        
+        document.select("a[href*='gdflix'], a[href*='busycdn'], a[href*='pixeldrain'], a[href*='mkv'], a[href*='direct']").forEach { 
             val link = it.attr("href")
-            // अगर लिंक मिल गया, तो उसे प्ले करने की कोशिश करेगा
-            loadExtractor(link, data, subtitleCallback, callback)
+
+            if (link.contains(".mkv") || link.contains(".mp4") || link.contains("direct")) {
+                callback.invoke(
+                    ExtractorLink(
+                        this.name,
+                        "Direct Server [MGT]",
+                        link,
+                        "",
+                        Qualities.P720.value,
+                        false
+                    )
+                )
+            } else {
+                loadExtractor(link, data, subtitleCallback, callback)
+            }
         }
         return true
     }
