@@ -14,15 +14,10 @@ open class BollyflixProvider : MainAPI() {
 
     override val mainPage = mainPageOf(
         "movies/bollywood/" to "Bollywood",
-        "movies/south-hindi-dubbed/" to "South Hindi Dubbed",
-        "movies/dual-audio-movies/" to "Dual Audio",
-        "movies/hindi-dubbed-movies-480p-720p/" to "Hindi Dubbed",
         "movies/hollywood/" to "Hollywood",
-        "web-series/netflix/" to "Netflix",
-        "web-series/amazon-prime-video/" to "Amazon Prime",
-        "web-series/hotstar/" to "Hotstar",
-        "web-series/disney/" to "Disney Plus",
-        "web-series/korean-drama/" to "Korean Drama"
+        "movies/dual-audio-movies/" to "Dual Audio",
+        "web-series/netflix/" to "Netflix Originals",
+        "web-series/hindi-dubbed-web-series/" to "Hindi Dubbed Series"
     )
 
     override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
@@ -41,10 +36,9 @@ open class BollyflixProvider : MainAPI() {
         val document = app.get(url).document
         val title = document.selectFirst("h1.entry-title")?.text() ?: return null
         val poster = document.selectFirst("img.attachment-sociallyviral-featuredbig")?.attr("src")
+        val type = if (url.contains("web-series")) TvType.TvSeries else TvType.Movie
         
-        return newMovieLoadResponse(title, url, TvType.Movie, url) {
-            this.posterUrl = poster
-        }
+        return newMovieLoadResponse(title, url, type, url) { this.posterUrl = poster }
     }
 
     override suspend fun loadLinks(
@@ -54,21 +48,10 @@ open class BollyflixProvider : MainAPI() {
         callback: (ExtractorLink) -> Unit
     ): Boolean {
         val document = app.get(data).document
-        
         document.select("a[href*='gdflix'], a[href*='busycdn'], a[href*='pixeldrain'], a[href*='mkv'], a[href*='direct']").forEach { 
             val link = it.attr("href")
-
             if (link.contains(".mkv") || link.contains(".mp4") || link.contains("direct")) {
-                callback.invoke(
-                    ExtractorLink(
-                        this.name,
-                        "Direct Server [MGT]",
-                        link,
-                        "",
-                        Qualities.P720.value,
-                        false
-                    )
-                )
+                callback.invoke(ExtractorLink(this.name, "Direct Server", link, "", Qualities.P720.value, false))
             } else {
                 loadExtractor(link, data, subtitleCallback, callback)
             }
