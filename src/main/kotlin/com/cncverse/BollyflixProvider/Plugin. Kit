@@ -1,0 +1,18 @@
+package com.cncverse
+
+import com.lagradost.cloudstream3.plugins.CloudstreamPlugin
+import com.lagradost.cloudstream3.plugins.Plugin
+import android.content.Context
+
+@CloudstreamPlugin
+class CNCVersePlugin : Plugin() {
+    override fun load(context: Context) {
+
+        // CineTv Provider
+        CineTvProvider.context = context
+        registerMainAPI(CineTvProvider())
+
+        // 🔥 Bollyflix Provider (NEW)
+        registerMainAPI(BollyflixProvider())
+    }
+}
