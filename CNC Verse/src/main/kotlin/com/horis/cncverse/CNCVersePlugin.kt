@@ -7,15 +7,14 @@ import android.content.Context
 @CloudstreamPlugin
 open class CNCVersePlugin: Plugin() {
     override fun load(context: Context) {
+        // Original Storage and Context Initialization
         NetflixMirrorStorage.init(context.applicationContext)
         DisneyPlusProvider.context = context
         NetflixMirrorProvider.context = context
         PrimeVideoMirrorProvider.context = context
         HotStarMirrorProvider.context = context
         
-        // Register Bollyflix with new categories
-        registerMainAPI(BollyflixProvider())
-        
+        // Registering only the Original Providers
         registerMainAPI(NetflixMirrorProvider())
         registerMainAPI(PrimeVideoMirrorProvider())
         registerMainAPI(HotStarMirrorProvider())
