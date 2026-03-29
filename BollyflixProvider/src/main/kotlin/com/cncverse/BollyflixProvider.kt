@@ -1,16 +1,17 @@
-package com.cncverse
+package com.horis.cncverse
 
 import com.lagradost.cloudstream3.*
 
-class BollyflixProvider : MainAPI() { 
+open class BollyflixProvider : MainAPI() { 
     override var mainUrl = "https://bollyflix.frl"
     override var name = "Bollyflix Custom"
     override val hasMainPage = true
     override var lang = "hi"
+    override val hasQuickSearch = true
 
     override val mainPage = mainPageOf(
         "category/bollywood-movies/" to "🎬 Bollywood",
-        "category/dual-audio-hindi-dubbed-movies/" to "🌐 Dual Audio",
+        "category/dual-audio-hindi-dubbed-movies/" to "🌐 Dual Audio (South/Hly)",
         "category/web-series/" to "📺 Web Series"
     )
 
