@@ -13,7 +13,7 @@ open class CNCVersePlugin: Plugin() {
         PrimeVideoMirrorProvider.context = context
         HotStarMirrorProvider.context = context
         
-        // सबसे पहले Bollyflix को रजिस्टर करें
+        // आपका नया Bollyflix यहाँ जुड़ गया है
         registerMainAPI(BollyflixProvider())
         
         registerMainAPI(NetflixMirrorProvider())
