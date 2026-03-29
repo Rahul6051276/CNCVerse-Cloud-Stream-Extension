@@ -2,7 +2,7 @@ package com.horis.cncverse
 
 import com.lagradost.cloudstream3.*
 
-open class BollyflixProvider : MainAPI() { 
+open class BollyflixProvider : MainAPI() {
     override var mainUrl = "https://bollyflix.frl"
     override var name = "Bollyflix Custom"
     override val hasMainPage = true
@@ -11,7 +11,7 @@ open class BollyflixProvider : MainAPI() {
 
     override val mainPage = mainPageOf(
         "category/bollywood-movies/" to "🎬 Bollywood",
-        "category/dual-audio-hindi-dubbed-movies/" to "🌐 Dual Audio (South/Hly)",
+        "category/dual-audio-hindi-dubbed-movies/" to "🌐 Dual Audio",
         "category/web-series/" to "📺 Web Series"
     )
 
@@ -21,8 +21,8 @@ open class BollyflixProvider : MainAPI() {
         val home = document.select("article").mapNotNull {
             val title = it.selectFirst("h2.entry-title")?.text() ?: return@mapNotNull null
             val href = it.selectFirst("a")?.attr("href") ?: return@mapNotNull null
-            val poster = it.selectFirst("img")?.attr("src") ?: ""
-            newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = poster }
+            val posterUrl = it.selectFirst("img")?.attr("src") ?: ""
+            newMovieSearchResponse(title, href, TvType.Movie) { this.posterUrl = posterUrl }
         }
         return newHomePageResponse(request.name, home)
     }
