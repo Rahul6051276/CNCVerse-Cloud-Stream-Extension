@@ -1,8 +1,8 @@
 import com.lagradost.cloudstream3.gradle.CloudstreamExtension
 import org.gradle.api.Project
 
-// वर्जन 45 एकदम सही है
-val version = 45
+// वर्जन 46 एकदम सही है
+val version = 46
 
 cloudstream {
     authors = listOf("Rahul6051276")
