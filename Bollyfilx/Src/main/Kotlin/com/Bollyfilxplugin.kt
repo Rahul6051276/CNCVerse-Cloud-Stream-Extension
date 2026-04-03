@@ -1,4 +1,4 @@
-package com.Bollyflix  // यह नाम Bollyflix.kt वाले से मैच होना चाहिए
+package com.Bollyflix 
 
 import com.lagradost.cloudstream3.plugins.CloudstreamPlugin
 import com.lagradost.cloudstream3.plugins.Plugin
@@ -7,7 +7,8 @@ import android.content.Context
 @CloudstreamPlugin
 class BollyflixPlugin: Plugin() {
     override fun load(context: Context) {
-        // यहाँ हम Bollyflix वाली मशीन को ऐप में चालू कर रहे हैं
+        // API और Extractor दोनों को एक साथ रजिस्टर करना
         registerMainAPI(Bollyflix()) 
+        registerExtractorAPI(VikingFile())
     }
 }
