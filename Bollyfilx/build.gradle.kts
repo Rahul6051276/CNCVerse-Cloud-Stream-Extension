@@ -1,20 +1,11 @@
-version = 31
+Version = 31
 
 cloudstream {
     language = "hi"
-    // All of these properties are optional, you can safely remove them
-
     description = "Movies and Series upto 4K"
-     authors = listOf("Bollyfilx")
+    authors = listOf("Bollyfilx")
 
-    /**
-     * Status int as the following:
-     * 0: Down
-     * 1: Ok
-     * 2: Slow
-     * 3: Beta only
-     * */
-    status = 1 // will be 3 if unspecified
+    status = 1 
     tvTypes = listOf(
         "TvSeries",
         "Movie",
@@ -22,5 +13,6 @@ cloudstream {
         "Anime"
     )
 
-    iconUrl = "https://raw.githubusercontent.com/Rahul6051276/https://github.com/Rahul6051276/CNCVerse-Cloud-Stream-Extension/refs/heads/master/Bollyflix/icon.png"
+    // सुधारी हुई लिंक नीचे है:
+    iconUrl = "https://raw.githubusercontent.com/Rahul6051276/CNCVerse-Cloud-Stream-Extension/master/Bollyflix/icon.png"
 }
