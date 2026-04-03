@@ -34,12 +34,11 @@
         ],
         "tvTypes": [
             "Movie",
-            "TvSeries",
-            "Anime"
+            "TvSeries"
         ],
-        "version": 48,
+        "version": 51,
         "internalName": "Bollyfilx",
-        "description": "Bollyflix",
+        "description": "Bollyflix Working Plugin v-51",
         "url": "https://raw.githubusercontent.com/Rahul6051276/CNCVerse-Cloud-Stream-Extension/builds/Bollyfilx.cs3",
         "name": "Bollyfilx"
     },
