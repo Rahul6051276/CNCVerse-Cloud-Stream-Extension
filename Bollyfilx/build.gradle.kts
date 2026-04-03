@@ -22,5 +22,5 @@ cloudstream {
         "Anime"
     )
 
-    iconUrl = "https://raw.githubusercontent.com/Rahul6051276/TVVVV/refs/heads/main/Icons/Bollyfilx.png"
+    iconUrl = "https://raw.githubusercontent.com/Rahul6051276/https://github.com/Rahul6051276/CNCVerse-Cloud-Stream-Extension/refs/heads/master/Bollyflix/icon.png"
 }
