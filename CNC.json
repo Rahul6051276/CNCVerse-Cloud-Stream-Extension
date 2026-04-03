@@ -1,0 +1,9 @@
+{
+  "name": "CNC Repo (Rahul)",
+  "iconUrl": "https://raw.githubusercontent.com/Rahul6051276/TVVVV/refs/heads/main/Icons/Bollyfilx.png",
+  "description": "All Language Contents",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://raw.githubusercontent.com/Rahul6051276/CNCVerse-Cloud-Stream-Extension/builds/plugins.json"
+  ]
+}
