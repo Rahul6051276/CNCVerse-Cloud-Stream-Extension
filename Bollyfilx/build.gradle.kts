@@ -1,32 +1,26 @@
-import com.lagradost.cloudstream3.gradle.CloudstreamExtension
-import org.gradle.api.Project
-
-// इसे 51 कर देते हैं ताकि ऐप को एकदम ताज़ा अपडेट मिले
-val versionNum = 51
+version = 31
 
 cloudstream {
-    // यहाँ वर्जन अपडेट करना सबसे ज़रूरी है
-    version = versionNum 
-    
-    authors = listOf("Rahul6051276")
-    description = "Bollyflix Working Plugin v-51"
     language = "hi"
-    status = 1 
+    // All of these properties are optional, you can safely remove them
 
+    description = "Movies and Series upto 4K"
+     authors = listOf("Bollyfilx")
+
+    /**
+     * Status int as the following:
+     * 0: Down
+     * 1: Ok
+     * 2: Slow
+     * 3: Beta only
+     * */
+    status = 1 // will be 3 if unspecified
     tvTypes = listOf(
+        "TvSeries",
         "Movie",
-        "TvSeries"
+        "AsianDrama",
+        "Anime"
     )
 
-    // आपका आइकॉन लिंक एकदम सही है
     iconUrl = "https://raw.githubusercontent.com/Rahul6051276/TVVVV/refs/heads/main/Icons/Bollyfilx.png"
-    isCrossPlatform = false
-}
-
-android {
-    namespace = "com.Bollyflix" 
-    
-    buildFeatures {
-        buildConfig = true
-    }
 }
