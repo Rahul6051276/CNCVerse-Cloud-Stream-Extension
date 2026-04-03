@@ -52,7 +52,7 @@ class Bollyflix : MainAPI() {
             list = HomePageList(
                 name = request.name,
                 list = items,
-                isHorizontalImages = false),
+                isHorizontalImages = false), 
             hasNext = true
         )
     }
