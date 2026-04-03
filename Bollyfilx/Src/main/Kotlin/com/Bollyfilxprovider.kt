@@ -117,4 +117,4 @@ class Bollyflix : MainAPI() {
         }
         return true
     }
-}
+} 
