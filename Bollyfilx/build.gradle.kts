@@ -1,10 +1,13 @@
 import com.lagradost.cloudstream3.gradle.CloudstreamExtension
 import org.gradle.api.Project
 
-// वर्जन 47 एकदम सही है
-val version = 47
+// इसे 48 कर देते हैं ताकि ऐप को नया अपडेट मिले
+val versionNum = 48
 
 cloudstream {
+    // यहाँ 'version' लिखना ज़रूरी है, वरना वह -1 उठा लेता है
+    version = versionNum 
+    
     authors = listOf("Rahul6051276")
     description = "Bollyflix"
     language = "hi"
@@ -21,7 +24,6 @@ cloudstream {
 }
 
 android {
-    // यह लाइन डालना ज़रूरी है ताकि ऐप को पता चले कि फोल्डर कहाँ है
     namespace = "com.Bollyflix" 
     
     buildFeatures {
