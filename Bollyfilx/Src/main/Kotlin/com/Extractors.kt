@@ -1,71 +1,32 @@
 package com.Bollyflix
 
-import com.lagradost.cloudstream3.SubtitleFile
 import com.lagradost.cloudstream3.app
 import com.lagradost.cloudstream3.utils.ExtractorApi
 import com.lagradost.cloudstream3.utils.ExtractorLink
-import com.lagradost.cloudstream3.utils.INFER_TYPE
 import com.lagradost.cloudstream3.utils.Qualities
-import com.lagradost.cloudstream3.utils.getQualityFromName
-import com.lagradost.cloudstream3.utils.loadExtractor
-import com.lagradost.cloudstream3.utils.newExtractorLink
-import org.json.JSONObject
-import java.net.URI
 
-class HubCloud : ExtractorApi() {
-    override val name = "Hub-Cloud"
-    override val mainUrl = "https://hubcloud.foo"
-    override val requiresReferer = false
+class VikingFile : ExtractorApi() {
+    override val name: String = "ViKiNG FiLE"
+    override val mainUrl: String = "https://vikingfile.com"
+    override val requiresReferer: Boolean = false
 
-    override suspend fun getUrl(
-        url: String,
-        referer: String?,
-        subtitleCallback: (SubtitleFile) -> Unit,
-        callback: (ExtractorLink) -> Unit
-    ) {
-        val document = app.get(url).document
-        // डाउनलोड बटन ढूंढना
-        val href = document.selectFirst("#download")?.attr("href") ?: url
-        
-        val res = app.get(href).document
-        val quality = getIndexQuality(res.selectFirst("div.card-header")?.text())
+    override suspend fun getUrl(url: String, referer: String?): List<ExtractorLink>? {
+        val response = app.get(url).document
+        // वीडियो-जेएस प्लेयर से असली .mkv/.mp4 लिंक निकालना
+        val videoSrc = response.selectFirst("video.vjs-tech")?.attr("src") 
+            ?: response.selectFirst("source")?.attr("src")
 
-        res.select("a.btn").forEach { element ->
-            val link = element.attr("href")
-            val label = element.text().lowercase()
-            
-            if (link.contains("http")) {
-                callback(
-                    newExtractorLink(
-                        "Bollyflix Server",
-                        "Bollyflix [HubCloud] $label",
-                        link,
-                        INFER_TYPE
-                    ) { this.quality = quality }
+        return if (!videoSrc.isNullOrEmpty()) {
+            listOf(
+                ExtractorLink(
+                    source = name,
+                    name = name,
+                    url = videoSrc,
+                    referer = url,
+                    quality = Qualities.P720.value,
+                    isM3u8 = videoSrc.contains(".m3u8")
                 )
-            }
-        }
-    }
-
-    private fun getIndexQuality(str: String?): Int {
-        return Regex("(\\d{3,4})[pP]").find(str ?: "")?.groupValues?.getOrNull(1)?.toIntOrNull()
-            ?: Qualities.P720.value
+            )
+        } else null
     }
 }
-
-class Gofile : ExtractorApi() {
-    override val name = "Gofile"
-    override val mainUrl = "https://gofile.io"
-    override val requiresReferer = false
-
-    override suspend fun getUrl(
-        url: String,
-        referer: String?,
-        subtitleCallback: (SubtitleFile) -> Unit,
-        callback: (ExtractorLink) -> Unit
-    ) {
-        // Gofile का लॉजिक आपकी पुरानी फाइल जैसा ही रहेगा
-        // यह सीधे लिंक को एक्स्ट्रेक्ट करता है
-        loadExtractor(url, referer, subtitleCallback, callback)
-    }
-} 
