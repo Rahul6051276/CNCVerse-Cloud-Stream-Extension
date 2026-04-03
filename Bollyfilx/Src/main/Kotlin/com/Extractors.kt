@@ -68,4 +68,4 @@ class Gofile : ExtractorApi() {
         // यह सीधे लिंक को एक्स्ट्रेक्ट करता है
         loadExtractor(url, referer, subtitleCallback, callback)
     }
-}
+} 
