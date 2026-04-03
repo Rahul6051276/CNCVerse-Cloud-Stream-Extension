@@ -1,27 +1,20 @@
-package com.Bollyfilx
+package com.Bollyfilx // आपके फोल्डर के नाम के अनुसार
 
 import com.lagradost.cloudstream3.*
 import com.lagradost.cloudstream3.utils.*
 import org.jsoup.nodes.Element
-import org.jsoup.select.Elements
-import com.lagradost.cloudstream3.base64Decode
-import com.lagradost.cloudstream3.LoadResponse.Companion.addImdbUrl
-import com.lagradost.cloudstream3.LoadResponse.Companion.addActors 
 import com.lagradost.cloudstream3.network.CloudflareKiller
-import com.google.gson.Gson
-import com.lagradost.cloudstream3.utils.AppUtils.parseJson
-import kotlinx.coroutines.runBlocking
+import com.lagradost.cloudstream3.base64Decode
 import org.json.JSONObject
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.supervisorScope
+import kotlinx.coroutines.runBlocking
 
 class BollyflixProvider : MainAPI() {
-    override var mainUrl = "https://bollyflix.frl"
+    // यहाँ अपनी वेबसाइट का वर्किंग डोमेन डालें
+    override var mainUrl = "https://bollyflix.frl" 
     override var name = "BollyFlix"
     override val hasMainPage = true
     override var lang = "hi"
-    val cinemeta_url = "https://aiometadata.elfhosted.com/stremio/9197a4a9-2f5b-4911-845e-8704c520bdf7/meta"
+    private val cinemeta_url = "https://aiometadata.elfhosted.com/stremio/9197a4a9-2f5b-4911-845e-8704c520bdf7/meta"
     override val hasDownloadSupport = true
     override val supportedTypes = setOf(
         TvType.Movie,
@@ -42,9 +35,10 @@ class BollyflixProvider : MainAPI() {
         val basemainUrl: String? by lazy {
             runBlocking {
                 try {
-                    val response = app.get("https://raw.githubusercontent.com/SaurabhKaperwan/Utils/refs/heads/main/urls.json")
-                    val json = response.text
-                    val jsonObject = JSONObject(json)
+                    // यहाँ 'Saurabh' को हटाकर 'Rahul6051276' कर दिया गया है
+                    // सुनिश्चित करें कि आपकी रिपॉजिटरी में 'urls.json' फाइल मौजूद हो
+                    val response = app.get("https://raw.githubusercontent.com/Rahul6051276/CNCVerse-Cloud-Stream-Extension/master/Bollyflix/urls.json")
+                    val jsonObject = JSONObject(response.text)
                     jsonObject.optString("bollyflix")
                 } catch (e: Exception) {
                     null
@@ -62,27 +56,13 @@ class BollyflixProvider : MainAPI() {
         "/anime/" to "Anime"
     )
 
-    override suspend fun getMainPage(
-        page: Int,
-        request: MainPageRequest
-    ): HomePageResponse {
-        val document = if(page == 1) {
-            app.get("${mainUrl}${request.data}", interceptor = cfKiller).document
-        }
-        else {
-            app.get(request.data + "page/" + page, interceptor = cfKiller).document
-        }
+    override suspend fun getMainPage(page: Int, request: MainPageRequest): HomePageResponse {
+        val fullUrl = if (page == 1) "${mainUrl}${request.data}" else "${mainUrl}${request.data}page/$page/"
+        val document = app.get(fullUrl, interceptor = cfKiller).document
         val home = document.select("div.post-cards > article").mapNotNull {
             it.toSearchResult()
         }
         return newHomePageResponse(request.name, home)
-    }
-
-    private suspend fun bypass(id: String): String {
-        val url = "https://web.sidexfee.com/?id=$id"
-        val document = app.get(url).text
-        val encodeUrl = Regex("""link":"([^"]+)""").find(document) ?. groupValues ?. get(1) ?: ""
-        return base64Decode(encodeUrl.replace("\\/", "/"))
     }
 
     private fun Element.toSearchResult(): SearchResponse? {
@@ -95,36 +75,27 @@ class BollyflixProvider : MainAPI() {
         }
     }
 
-    override suspend fun search(query: String, page: Int): SearchResponseList? {
+    override suspend fun search(query: String, page: Int): List<SearchResponse> {
         val document = app.get("$mainUrl/search/$query/page/$page/", interceptor = cfKiller).document
-        val results = document.select("div.post-cards > article").mapNotNull { it.toSearchResult() }
-        val hasNext = if(results.isEmpty()) false else true
-        return newSearchResponseList(results, hasNext)
+        return document.select("div.post-cards > article").mapNotNull { it.toSearchResult() }
     }
 
     override suspend fun load(url: String): LoadResponse? {
         val document = app.get(url, interceptor = cfKiller).document
-        var title = document.selectFirst("title")?.text()?.replace("Download ", "").toString()
-        var posterUrl = document.selectFirst("meta[property=og:image]")?.attr("content").toString()
-        var description = document.selectFirst("span#summary")?.text().toString()
-        val tvtype = if(title.contains("Series") || url.contains("web-series")) {
-            "series"
-        }
-        else {
-            "movie"
-        }
-        val imdbUrl = document.selectFirst("div.imdb_left > a")?.attr("href")
-        val responseData = if (!imdbUrl.isNullOrEmpty()) {
-            try {
-                val imdbId = imdbUrl.substringAfter("title/").substringBefore("/")
-                app.get("$cinemeta_url/$tvtype/$imdbId.json").parsedSafe<ResponseData>()
+        val title = document.selectFirst("h1.entry-title")?.text()?.replace("Download ", "") ?: ""
+        val posterUrl = document.selectFirst("meta[property=og:image]")?.attr("content")
+        val plot = document.selectFirst("div.entry-content p")?.text()
 
-            } catch (e: Exception) {
-                null
+        return if (url.contains("web-series")) {
+            newTvSeriesLoadResponse(title, url, TvType.TvSeries, emptyList()) {
+                this.posterUrl = posterUrl
+                this.plot = plot
             }
         } else {
-            null
+            newMovieLoadResponse(title, url, TvType.Movie, url) {
+                this.posterUrl = posterUrl
+                this.plot = plot
+            }
         }
-
-        var cast: List<String> = emptyList()
-        var genre: List<String> = emptyList()
+    }
+}
