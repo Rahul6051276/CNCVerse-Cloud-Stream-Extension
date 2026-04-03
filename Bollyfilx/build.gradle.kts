@@ -1,27 +1,38 @@
-// use an integer for version numbers
-version = 44
+import com.lagradost.cloudstream3.gradle.CloudstreamExtension
+import org.gradle.api.Project
 
+// वर्जन नंबर 45 कर दिया है ताकि नया अपडेट लोड हो
+val version = 45
 
 cloudstream {
+    // यहाँ आपका नाम
     authors = listOf("Rahul6051276")
 
-    /**
-    * Status int as the following:
-    * 0: Down
-    * 1: Ok
-    * 2: Slow
-    * 3: Beta only
-    * */
-    status = 1 // will be 3 if unspecified
+    description = "Bollyflix"
+    language = "hi"
 
+    /**
+     * Status: 1 (Ok)
+     * */
+    status = 1 
+
+    // Bollyflix के हिसाब से कैटेगरी
     tvTypes = listOf(
         "Movie",
         "TvSeries",
         "Anime"
     )
-    language = "hi"
-//  https://t0.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://hdhub4u.gratis&size=64
-    iconUrl = "https://raw.githubusercontent.com/Rahul6051276/TVVVV/refs/heads/main/Icons/Bollyfilx.png"
 
+    // आपका दिया हुआ आइकॉन लिंक
+    iconUrl = "https://raw.githubusercontent.com/Rahul6051276/TVVVV/refs/heads/main/Icons/Bollyfilx.png"
+    
+    // मोबाइल और टीवी दोनों के लिए
     isCrossPlatform = false
+}
+
+// यह हिस्सा आपके 'BuildConfig' वाले एरर को ठीक करेगा
+android {
+    buildFeatures {
+        buildConfig = true
+    }
 }
