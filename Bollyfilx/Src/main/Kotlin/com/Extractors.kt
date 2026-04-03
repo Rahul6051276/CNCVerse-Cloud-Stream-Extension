@@ -25,7 +25,7 @@ class VikingFile : ExtractorApi() {
                     referer = url,
                     quality = Qualities.P720.value,
                     isM3u8 = videoSrc.contains(".m3u8")
-                )
+                ) 
             )
         } else null
     }
