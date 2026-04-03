@@ -9,6 +9,6 @@ class BollyflixPlugin: Plugin() {
     override fun load(context: Context) {
         // API और Extractor दोनों को एक साथ रजिस्टर करना
         registerMainAPI(Bollyflix()) 
-        registerExtractorAPI(VikingFile())
+        registerExtractorAPI(VikingFile()) 
     }
 }
