@@ -5,7 +5,7 @@ import com.lagradost.cloudstream3.utils.*
 import org.jsoup.nodes.Element
 
 class Bollyflix : MainAPI() {
-    override var mainUrl: String = "https://bollyflix.com.mx" 
+    override var mainUrl: String = "https://Bollyflix.frl" 
     override var name = "Bollyflix"
     override val hasMainPage = true
     override var lang = "hi"
