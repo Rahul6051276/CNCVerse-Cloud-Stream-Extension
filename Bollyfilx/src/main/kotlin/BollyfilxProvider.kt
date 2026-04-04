@@ -11,4 +11,4 @@ class BollyflixProvider: BasePlugin() {
         registerExtractorAPI(LinksMod())
         registerExtractorAPI(Gofile())
     }
-}
+} 
