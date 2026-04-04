@@ -24,25 +24,6 @@
         "name": "BilibiliProvider"
     },
     {
-        "iconUrl": "https://raw.githubusercontent.com/Rahul6051276/TVVVV/refs/heads/main/Icons/Bollyfilx.png",
-        "apiVersion": 1,
-        "repositoryUrl": "https://github.com/Rahul6051276/CNCVerse-Cloud-Stream-Extension",
-        "status": 1,
-        "language": "hi",
-        "authors": [
-            "Rahul6051276"
-        ],
-        "tvTypes": [
-            "Movie",
-            "TvSeries"
-        ],
-        "version": 51,
-        "internalName": "Bollyfilx",
-        "description": "Bollyflix Working Plugin v-51",
-        "url": "https://raw.githubusercontent.com/Rahul6051276/CNCVerse-Cloud-Stream-Extension/builds/Bollyfilx.cs3",
-        "name": "Bollyfilx"
-    },
-    {
         "iconUrl": "https://github.com/NivinCNC/CNCVerse-Cloud-Stream-Extension/raw/refs/heads/master/CastleTvProvider/icon.png",
         "apiVersion": 1,
         "repositoryUrl": "https://github.com/Rahul6051276/CNCVerse-Cloud-Stream-Extension",
